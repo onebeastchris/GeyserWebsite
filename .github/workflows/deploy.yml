@@ -139,6 +139,8 @@ jobs:
         run: yarn build --locale ${{ matrix.locales }}
         # TODO temporary: forks are served from <owner>.github.io/<repo>/, remove before merging
         env:
+          # The Mermaid theme makes the client bundle too large for Node's default heap
+          NODE_OPTIONS: --max-old-space-size=8192
           SITE_URL: ${{ github.repository != 'GeyserMC/GeyserWebsite' && format('https://{0}.github.io', github.repository_owner) || '' }}
           BASE_URL: ${{ github.repository != 'GeyserMC/GeyserWebsite' && format('/{0}/', github.event.repository.name) || '' }}
 
