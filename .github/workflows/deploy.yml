@@ -137,6 +137,10 @@ jobs:
 
       - name: Build Locale
         run: yarn build --locale ${{ matrix.locales }}
+        # TODO temporary: forks are served from <owner>.github.io/<repo>/, remove before merging
+        env:
+          SITE_URL: ${{ github.repository != 'GeyserMC/GeyserWebsite' && format('https://{0}.github.io', github.repository_owner) || '' }}
+          BASE_URL: ${{ github.repository != 'GeyserMC/GeyserWebsite' && format('/{0}/', github.event.repository.name) || '' }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4

@@ -8,8 +8,9 @@ const config: Config = {
     tagline: 'Revolutionize Your Minecraft Server',
     favicon: 'img/favicon.ico',
     
-    url: 'https://geysermc.org',
-    baseUrl: '/',
+    // TODO temporary: lets fork builds (e.g. GitHub Pages under /<repo>/) override these, remove before merging
+    url: process.env.SITE_URL || 'https://geysermc.org',
+    baseUrl: process.env.BASE_URL || '/',
 
     organizationName: 'GeyserMC',
     projectName: 'GeyserWebsite',
@@ -95,7 +96,9 @@ const config: Config = {
                 }
             },
         ],
-        [
+        // TODO temporary: the OG image plugin resolves built pages by permalink, which breaks with a non-root baseUrl.
+        // Skip it for fork builds; remove this condition before merging.
+        ...(process.env.BASE_URL ? [] : [[
             '@kas-tle/docusaurus-og',
             {
                 path: './preview-images',
@@ -105,7 +108,7 @@ const config: Config = {
                     'docusaurus-plugin-content-blog': blogOgRenderer,
                 },
             },
-        ],
+        ] as [string, object]]),
         'docusaurus-plugin-sass',
         './src/plugins/create-versions-json.ts',
         [
